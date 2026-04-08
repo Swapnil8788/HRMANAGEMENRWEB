@@ -11,5 +11,5 @@ export default [
     { path: 'login', component: Login },
     { path: 'registration', component: Registration },
     { path: '', component: Login, pathMatch: 'full' },
-    { path: '**', redirectTo: 'login' }
+    { path: '**', redirectTo: '/notfound' }
 ] as Routes;
