@@ -48,8 +48,8 @@ input::placeholder{
     cursor: pointer;
 }
 .login-button:disabled{
-    background-color: var(--secondary-text-color);
-    border: 1px solid var(--secondary-text-color);
+    background-color: var(--p-primary-color);
+    border: 1px solid var(--p-primary-color);
     color: white;
     cursor: not-allowed;
 }

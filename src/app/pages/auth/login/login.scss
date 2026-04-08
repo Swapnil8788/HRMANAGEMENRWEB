@@ -48,9 +48,9 @@ input::placeholder{
     cursor: pointer;
 }
 .login-button:disabled{
-    background-color: var(--secondary-text-color);
-    border: 1px solid var(--secondary-text-color);
-    color: white;
+    background-color: var(--p-primary-color);
+    border: 1px solid var(--p-primary-color);
+    color: rgb(255, 255, 255);
     cursor: not-allowed;
 }
 :host ::ng-deep {
