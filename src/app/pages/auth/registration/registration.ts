@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
@@ -7,6 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { Router } from '@angular/router';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { Auth } from '@/app/services/auth';
 
 
 
@@ -18,6 +19,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
   standalone: true
 })
 export class Registration {
+  auth = inject(Auth);
   registerForm: FormGroup;
   roleOptions: any[] = [
     { label: 'Admin', value: 'Admin' },
@@ -38,6 +40,13 @@ export class Registration {
     }, { validators: this.passwordMatchValidator });
   }
 
+  ngOnInit() {
+    this.auth.getRoles().subscribe((roles: any) => {
+      this.roleOptions = roles;
+      console.log("roles", roles);
+    });
+  }
+
   passwordMatchValidator(form: FormGroup) {
     return form.get('password')?.value === form.get('confirm')?.value
       ? null : { passwordMatchValidator: true };
@@ -52,7 +61,7 @@ export class Registration {
   }
 
     loginUser(){
-      this.router.navigate(['/login']);
+      this.router.navigate(['auth/login']);
 
     }
   registerUser() {
@@ -60,9 +69,8 @@ export class Registration {
       this.registerForm.markAllAsTouched();
       return;
     }
-    this.router.navigate(['/login']);
-  
-
+    // this.router.navigate(['auth/login']);
     console.log(this.registerForm.value);
+
   }
 }

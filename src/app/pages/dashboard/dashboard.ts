@@ -5,6 +5,8 @@ import { RecentSalesWidget } from './components/recentsaleswidget';
 import { BestSellingWidget } from './components/bestsellingwidget';
 import { RevenueStreamWidget } from './components/revenuestreamwidget';
 import { NotificationsWidget } from './components/notificationswidget';
+import { Store } from '@ngrx/store';
+import { selectUserEmail } from '@/app/store/user/user.selector';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,6 +16,11 @@ import { NotificationsWidget } from './components/notificationswidget';
 })
 export class Dashboard {
   auth = inject(Auth);
+  private store = inject(Store)
+
+
+  email$ = this.store.select(selectUserEmail);
+
   ngOnInit(){
     this.auth.getData().subscribe(data => {
       console.log(data);

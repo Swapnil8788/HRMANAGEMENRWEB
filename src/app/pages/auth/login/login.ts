@@ -2,11 +2,13 @@ import { CommonModule, NgFor } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { CheckboxModule } from 'primeng/checkbox';
+import { setUser } from '@/app/store/user/user.actions';
 
 
 
@@ -25,15 +27,22 @@ export class Login implements OnInit {
     isTnC: new FormControl(false, [Validators.requiredTrue])
   })
   isTnCChecked: boolean = false;
-  constructor(private router: Router){}
+  constructor(private router: Router, private store: Store){}
+
   ngOnInit(){
   }
   registerUser(){
-    this.router.navigate(['/registration']);
+    this.router.navigate(['auth/registration']);
   }
   loginUser(){
     console.log(this.loginForm.value);
     this.router.navigate(['/dashboard']);
+    this.store.dispatch(
+      setUser({
+        email: this.loginForm.value.email || "defaultuser@gmail.com",
+        roles: this.loginForm.value.roles || ["admin"]
+      })
+    )
   }
   clicked(){
     console.log("clicked");
