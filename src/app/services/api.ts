@@ -1,18 +1,40 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { RefreshToken, User, UserLoginResponse, registerUserDetails } from '../types/user';
+import { LOGIN, REFRESH_TOKEN } from './UrlPaths';
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class Api {
   URL = 'http://localhost:5085'
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
 
   }
-  getData(){
+  getData() {
     return this.http.get('https://jsonplaceholder.typicode.com/posts');
   }
-  get(path: string){
+  get(path: string) {
     return this.http.get(this.URL + path);
+  }
+  login(userDetails: User): Observable<UserLoginResponse> {
+    return this.http.post<UserLoginResponse>(this.URL + LOGIN, userDetails);
+  }
+  register(registerUserDetails: registerUserDetails) {
+    return this.http.post(this.URL + '/api/auth/register', registerUserDetails);
+  }
+  logout() {
+    localStorage.clear();
+    this.router.navigate(['auth/login']);
+  }
+  refreshToken(refreshToken: RefreshToken): Observable<RefreshToken> {
+    return this.http.post<RefreshToken>(this.URL + REFRESH_TOKEN, refreshToken, {
+      headers: {
+        Authorization: `Bearer ${refreshToken.accessToken}`
+      }
+    })
   }
 }

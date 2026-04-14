@@ -9,13 +9,15 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { CheckboxModule } from 'primeng/checkbox';
 import { setUser } from '@/app/store/user/user.actions';
+import { Auth } from '@/app/services/auth';
+import { UserLoginResponse } from '@/app/types/user';
 
 
 
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, ReactiveFormsModule, ButtonModule, InputTextModule,PasswordModule,CheckboxModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ButtonModule, InputTextModule, PasswordModule, CheckboxModule, FormsModule],
   templateUrl: './login.html',
   styleUrl: './login.scss',
   standalone: true
@@ -23,28 +25,47 @@ import { setUser } from '@/app/store/user/user.actions';
 export class Login implements OnInit {
   loginForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('',[Validators.required]),
-    isTnC: new FormControl(false, [Validators.requiredTrue])
+    password: new FormControl('', [Validators.required]),
   })
-  isTnCChecked: boolean = false;
-  constructor(private router: Router, private store: Store){}
+  auth = new Auth();
+  constructor(private router: Router, private store: Store,) { }
 
-  ngOnInit(){
+  ngOnInit() {
+    this.auth.logout();
   }
-  registerUser(){
+  registerUser() {
     this.router.navigate(['auth/registration']);
   }
-  loginUser(){
+  loginUser() {
     console.log(this.loginForm.value);
-    this.router.navigate(['/dashboard']);
-    this.store.dispatch(
-      setUser({
-        email: this.loginForm.value.email || "defaultuser@gmail.com",
-        roles: this.loginForm.value.roles || ["admin"]
-      })
-    )
+    const payload = {
+      email: this.loginForm.value.email,
+      password: this.loginForm.value.password
+    }
+    this.auth.login(payload).subscribe({
+      next: (res: UserLoginResponse | null ) => {
+        console.log(res);
+        this.store.dispatch(
+          setUser({
+            email: payload.email,
+            roles: res?.roles || []
+          })
+        )
+        console.log("User roles from response:", res);
+        localStorage.setItem('accessToken', res?.accessToken || '');
+        localStorage.setItem('refreshToken', res?.refreshToken || '');
+        this.router.navigate(['pages']);
+      },
+      error: (err) => {
+        console.error(err);
+      },
+      complete: () => {
+        console.log('Login request completed');
+      }
+    })
+    // this.router.navigate(['pages']);
   }
-  clicked(){
+  clicked() {
     console.log("clicked");
   }
 }

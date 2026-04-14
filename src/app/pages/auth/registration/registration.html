@@ -68,7 +68,7 @@
             
             <div class="field mb-15">
                 <label class="field-label">Roles</label>
-                <p-multiselect [options]="roleOptions" formControlName="roles" optionLabel="codeDesc" optionValue="code" 
+                <p-multiselect [options]="roleOptions" formControlName="roles" optionLabel="codeDesc" optionValue="codeDesc" 
                       placeholder="Select Roles"  />
                 <small *ngIf="registerForm.get('roles')?.touched && registerForm.get('roles')?.invalid"
                     class="red">
