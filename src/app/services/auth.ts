@@ -23,7 +23,7 @@ export class Auth {
     return this.api.register(registerUserDetails);
   }
   logout(){
-    this.api.logout();
+    return this.api.logout();
     
   }
 

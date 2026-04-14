@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { RefreshToken, User, UserLoginResponse, registerUserDetails } from '../types/user';
-import { LOGIN, REFRESH_TOKEN } from './UrlPaths';
+import { LOGIN, LOGOUT, REFRESH_TOKEN } from './UrlPaths';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -27,8 +27,8 @@ export class Api {
     return this.http.post(this.URL + '/api/auth/register', registerUserDetails);
   }
   logout() {
-    localStorage.clear();
-    this.router.navigate(['auth/login']);
+    const refreshToken = localStorage.getItem('refreshToken') || '';
+    return this.http.post(this.URL + LOGOUT, {refreshToken : refreshToken});
   }
   refreshToken(refreshToken: RefreshToken): Observable<RefreshToken> {
     return this.http.post<RefreshToken>(this.URL + REFRESH_TOKEN, refreshToken, {

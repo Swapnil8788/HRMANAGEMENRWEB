@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { StyleClassModule } from 'primeng/styleclass';
 import { AppConfigurator } from './app.configurator';
@@ -86,6 +86,7 @@ import { Auth } from '@/app/services/auth';
 export class AppTopbar {
     items!: MenuItem[];
     private auth = inject(Auth);
+    private router = inject(Router);   
 
     layoutService = inject(LayoutService);
 
@@ -95,7 +96,19 @@ export class AppTopbar {
             darkTheme: !state.darkTheme
         }));
     }
-    logoutUser(){
-        this.auth.logout();
+    logoutUser() {
+        this.auth.logout().subscribe({
+            next: (res) => {
+                localStorage.clear();
+                this.router.navigate(['auth/login']);
+                console.log("Logout successful", res);
+            },
+            error: (err) => {
+                console.error("Logout failed", err);
+            },
+            complete: () => {
+                console.log("Logout request completed");
+            }
+        });
     }
 }
