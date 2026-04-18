@@ -5,11 +5,17 @@ import { Login } from './login/login';
 import { Error } from './error';
 import { Registration } from './registration/registration';
 
+// export default [
+//     { path: 'access', component: Access },
+//     { path: 'error', component: Error },
+//     { path: 'login', component: Login },
+//     { path: 'registration', component: Registration },
+//     { path: '', component: Login, pathMatch: 'full' },
+//     { path: '**', redirectTo: '/login' }
+// ] as Routes;
+
 export default [
     { path: 'access', component: Access },
     { path: 'error', component: Error },
     { path: 'login', component: Login },
-    { path: 'registration', component: Registration },
-    { path: '', component: Login, pathMatch: 'full' },
-    { path: '**', redirectTo: '/login' }
-] as Routes;
+    { path: 'registration', component: Registration },] as Routes;

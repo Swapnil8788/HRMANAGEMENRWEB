@@ -24,7 +24,7 @@ interface expandedRows {
 }
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-organisations',
   imports: [TableModule,
     MultiSelectModule,
     SelectModule,
@@ -41,11 +41,11 @@ interface expandedRows {
     RatingModule,
     RippleModule,
     IconFieldModule],
-  templateUrl: './dashboard.html',
-  styleUrl: './dashboard.scss',
+  templateUrl: './organisations.html',
+  styleUrl: './organisations.scss',
   providers: [CustomerService]
 })
-export class Dashboard {
+export class Organisations {
   organisations: any = []
   activityValues: number[] = [0, 100];
   statuses: any[] = [];
@@ -123,9 +123,8 @@ export class Dashboard {
   }
 
   onGlobalFilter(table: Table, event: Event) {
-    console.log(event)
+    console.log(event )
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 
 }
-

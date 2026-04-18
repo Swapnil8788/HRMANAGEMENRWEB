@@ -11,9 +11,9 @@ export const authGuard: CanActivateFn = (route, state) => {
   const token = localStorage.getItem('accessToken');
   const email$ = store.select(selectUserEmail);
 
-if (!token || !email$) {
-  router.navigate(['/auth/login']);
-  return false;
-}
-return true;
+  if (!token || !email$) {
+    router.navigate(['/auth/login']);
+    return false;
+  }
+  return true;
 };

@@ -31,7 +31,19 @@ export class Login implements OnInit {
   constructor(private router: Router, private store: Store,) { }
 
   ngOnInit() {
-    this.auth.logout();
+    this.auth.logout().subscribe({
+      next: (res) => {
+        localStorage.clear();
+        this.router.navigate(['auth/login']);
+        console.log("Logout successful", res);
+      },
+      error: (err) => {
+        console.error("Logout failed", err);
+      },
+      complete: () => {
+        console.log("Logout request completed");
+      }
+    });
   }
   registerUser() {
     this.router.navigate(['auth/registration']);
@@ -43,7 +55,7 @@ export class Login implements OnInit {
       password: this.loginForm.value.password
     }
     this.auth.login(payload).subscribe({
-      next: (res: UserLoginResponse | null ) => {
+      next: (res: UserLoginResponse | null) => {
         console.log(res);
         this.store.dispatch(
           setUser({
