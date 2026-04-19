@@ -27,7 +27,7 @@ interface expandedRows {
   selector: 'app-organisations',
   imports: [TableModule,
     MultiSelectModule,
-    SelectModule,
+    SelectModule, 
     InputIconModule,
     TagModule,
     InputTextModule,
